@@ -6,7 +6,7 @@
 #    By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/13 14:56:58 by taelkhal          #+#    #+#              #
-#    Updated: 2024/02/24 01:10:48 by taelkhal         ###   ########.fr        #
+#    Updated: 2024/02/24 15:14:32 by taelkhal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = btc
 
 CC = c++
 
-CXXFLAGS = #-Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRCS = main.cpp BitcoinExchange.cpp
 

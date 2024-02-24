@@ -6,7 +6,7 @@
 /*   By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:25:20 by taelkhal          #+#    #+#             */
-/*   Updated: 2024/02/20 15:10:38 by taelkhal         ###   ########.fr       */
+/*   Updated: 2024/02/24 17:04:22 by taelkhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,6 @@ void RPN::run_rpn(std::string str)
                 }
                 else
                 {
-                    while (!rpn.empty())
-                    {
-                        std::cout << rpn.top() << std::endl;
-                        rpn.pop();
-                    }
                     std::cout << "Error" << std::endl;
                     exit (0);
                 }

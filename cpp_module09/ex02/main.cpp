@@ -12,65 +12,30 @@
 
 #include "PmergeMe.hpp"
 
-// int main(int ac, char **av)
-// {
-//     if (ac < 1)
-//     {
-//         std::cout << "Error" << std::endl;
-//         exit (0);
-//     }
-//     PmergeMe a;
-
-//     std::string s = 
-//     for (int i = 0;i < av)
-//         a.run_pmergeme(av[i])
-
-// }
-
 void merge_v(std::vector<int> &arr, std::vector<std::pair<int, int> > &pairs,int start)
 {
-    // std::vector<int> arr1 = arr;
-    // std::vector<std::pair<int, int>> pairs;
     std::vector<int>::iterator it = arr.begin() + start;
-    // std::vector<std::pair<int, int>>::iterator it_p;
 
     if (it == arr.end())
         return ;
     pairs.push_back(std::make_pair(arr[start], arr[start + 1]));
-    // it_p = pairs.begin();
     std::vector<std::pair<int, int> >::iterator it_p = pairs.begin() + (pairs.size() - 1);
-    // std::cout << it_p->first << it_p->second << std::endl;
     if (it_p->first > it_p->second)
         std::swap(it_p->first, it_p->second);
-    // std::cout << it_p->first << it_p->second << std::endl;
-
-    // if (arr.size() ==  1)
-    // 
-    // std::cout << pairs.back().first << pairs.back().second << std::endl;
     start += 2;
     merge_v(arr, pairs, start);
 }
 
 void merge_q(std::deque<int> &arr, std::deque<std::pair<int, int> > &pairs,int start)
 {
-    // std::vector<int> arr1 = arr;
-    // std::vector<std::pair<int, int>> pairs;
     std::deque<int>::iterator it = arr.begin() + start;
-    // std::vector<std::pair<int, int>>::iterator it_p;
 
     if (it == arr.end())
         return ;
     pairs.push_back(std::make_pair(arr[start], arr[start + 1]));
-    // it_p = pairs.begin();
     std::deque<std::pair<int, int> >::iterator it_p = pairs.begin() + (pairs.size() - 1);
-    // std::cout << it_p->first << it_p->second << std::endl;
     if (it_p->first > it_p->second)
         std::swap(it_p->first, it_p->second);
-    // std::cout << it_p->first << it_p->second << std::endl;
-
-    // if (arr.size() ==  1)
-    // 
-    // std::cout << pairs.back().first << pairs.back().second << std::endl;
     start += 2;
     merge_q(arr, pairs, start);
 }
@@ -95,44 +60,27 @@ int main(int ac, char **av)
     std::deque<int> arr_d, largest_d, smallest_d;
     std::vector<std::pair<int, int> > pairs_v;
     std::deque<std::pair<int, int> > pairs_d;
-
-
-
     int nb;
 
+    if (ac == 1)
+    {
+        std::cout << "Error" << std::endl;
+        exit (0);
+    }
     for(int i = 1; i < ac; i++)
     {
         // std::cout << av[i] << std::endl;
         std::string str = av[i];
         for(size_t j = 0; str[j]; j++)
-        {
             check_input(str);
-            // if (str[j] == '-' && str[j + 1] == '-')
-            // {
-            //     std::cout << "Error: invalid number" << std::endl;
-            //     exit (1);
-            // }
-            // if (str[j] == '-')
-            //     break;
-            // if (!std::isdigit(str[j]))
-            // {
-            //     std::cout << "Error: invalid number" << std::endl;
-            //     exit (1);
-            // }
-        }
-        // nb = stoi(str);
         nb = atoi(av[i]);
         if (nb < 0)
         {
             std::cout << "Error: negative number" << std::endl;
             exit (1);
         }
-
-        // std::cout << nb << std::endl;
         arr_v.push_back(nb);
         arr_d.push_back(nb);
-        // std::cout << arr_v[i - 1] << std::endl;
-        // std::cout << arr_v[i - 1] << std::endl;
     }
     std::cout << "Before: ";
     for (size_t j = 0; j < arr_v.size(); j++)
@@ -155,7 +103,6 @@ int main(int ac, char **av)
         check_d = 1;
     }
     clock_t start_v = clock();
-    // std::cout << start << std::endl;
     merge_v(arr_v, pairs_v, 0);
     std::vector<std::pair<int, int> >::iterator it_p;
     for (it_p = pairs_v.begin(); it_p != pairs_v.end(); it_p++)
@@ -176,14 +123,10 @@ int main(int ac, char **av)
         largest_v.insert(it_l, last_v);
     }
     clock_t end_v = clock();
-    double time_v = (end_v - start_v) / (CLOCKS_PER_SEC / 100000.0);
+    double time_v = (double(end_v - start_v) / CLOCKS_PER_SEC) * 1000000;
     arr_v.erase(arr_v.begin(), arr_v.end());
     for (size_t i = 0;i < largest_v.size(); i++)
         arr_v.push_back(largest_v[i]);
-    // for (size_t j = 0; j < arr_v.size(); j++)
-    // {
-    //     std::cout << arr_v[j] << std::endl;
-    // }
     ///////////////////////////deque/////////////////////
     clock_t start_d = clock();
     merge_q(arr_d, pairs_d, 0);
@@ -206,7 +149,7 @@ int main(int ac, char **av)
         largest_d.insert(itl_d, last_d);
     }
     clock_t end_d = clock();
-    double time_d = (end_d - start_d) / (CLOCKS_PER_SEC / 100000.0);
+    double time_d = (double(end_d - start_d) / CLOCKS_PER_SEC) * 1000000;
     arr_d.erase(arr_d.begin(), arr_d.end());
     for (size_t i = 0;i < largest_d.size(); i++)
         arr_d.push_back(largest_d[i]);
