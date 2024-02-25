@@ -12,32 +12,73 @@
 
 #include "PmergeMe.hpp"
 
-void merge_v(std::vector<int> &arr, std::vector<std::pair<int, int> > &pairs,int start)
+void sort_v(std::vector<int> &largest_v, size_t start)
 {
-    std::vector<int>::iterator it = arr.begin() + start;
-
-    if (it == arr.end())
-        return ;
-    pairs.push_back(std::make_pair(arr[start], arr[start + 1]));
-    std::vector<std::pair<int, int> >::iterator it_p = pairs.begin() + (pairs.size() - 1);
-    if (it_p->first > it_p->second)
-        std::swap(it_p->first, it_p->second);
-    start += 2;
-    merge_v(arr, pairs, start);
+    if (start == 0)
+        return;
+    for (size_t i = 0; i < start - 1; i++)
+    {
+        if (largest_v[i] > largest_v[i + 1])
+            std::swap(largest_v[i], largest_v[i + 1]);
+    }
+    sort_v(largest_v, start - 1);
 }
 
-void merge_q(std::deque<int> &arr, std::deque<std::pair<int, int> > &pairs,int start)
+void sort_d(std::deque<int> &largest_d, size_t start)
 {
-    std::deque<int>::iterator it = arr.begin() + start;
+    if (start == 0)
+        return;
+    for (size_t i = 0; i < start - 1; i++)
+    {
+        if (largest_d[i] > largest_d[i + 1])
+            std::swap(largest_d[i], largest_d[i + 1]);
+    }
+    sort_d(largest_d, start - 1);
+}
 
-    if (it == arr.end())
-        return ;
-    pairs.push_back(std::make_pair(arr[start], arr[start + 1]));
-    std::deque<std::pair<int, int> >::iterator it_p = pairs.begin() + (pairs.size() - 1);
-    if (it_p->first > it_p->second)
-        std::swap(it_p->first, it_p->second);
-    start += 2;
-    merge_q(arr, pairs, start);
+void merge_v(std::vector<int> &arr, std::vector<std::pair<int, int> > &pairs)
+{
+    // std::vector<int>::iterator it = arr.begin() + start;
+
+    // if (it == arr.end())
+    //     return ;
+    // pairs.push_back(std::make_pair(arr[start], arr[start + 1]));
+    // if (it_p->first > it_p->second)
+    //     std::swap(it_p->first, it_p->second);
+    // start += 2;
+    // merge_v(arr, pairs, start);
+    size_t i = 0;
+    while (i < arr.size())
+    {
+        pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
+        std::vector<std::pair<int, int> >::iterator it_p = pairs.begin() + (pairs.size() - 1);
+        if (it_p->first > it_p->second)
+            std::swap(it_p->first, it_p->second);
+        i += 2;
+    }
+}
+
+void merge_q(std::deque<int> &arr, std::deque<std::pair<int, int> > &pairs)
+{
+    // std::deque<int>::iterator it = arr.begin() + start;
+
+    // if (it == arr.end())
+    //     return ;
+    // pairs.push_back(std::make_pair(arr[start], arr[start + 1]));
+    // std::deque<std::pair<int, int> >::iterator it_p = pairs.begin() + (pairs.size() - 1);
+    // if (it_p->first > it_p->second)
+    //     std::swap(it_p->first, it_p->second);
+    // start += 2;
+    // merge_q(arr, pairs, start);
+    size_t i = 0;
+    while (i < arr.size())
+    {
+        pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
+        std::deque<std::pair<int, int> >::iterator it_p = pairs.begin() + (pairs.size() - 1);
+        if (it_p->first > it_p->second)
+            std::swap(it_p->first, it_p->second);
+        i += 2;
+    }
 }
 
 void check_input(std::string str)
@@ -62,7 +103,7 @@ int main(int ac, char **av)
     std::deque<std::pair<int, int> > pairs_d;
     int nb;
 
-    if (ac == 1)
+    if (ac <= 2)
     {
         std::cout << "Error" << std::endl;
         exit (0);
@@ -83,8 +124,17 @@ int main(int ac, char **av)
         arr_d.push_back(nb);
     }
     std::cout << "Before: ";
-    for (size_t j = 0; j < arr_v.size(); j++)
-        std::cout << arr_v[j] << " ";
+    if (arr_v.size() < 5)
+    {
+        for (size_t j = 0; j < arr_v.size(); j++)
+            std::cout << arr_v[j] << " ";
+    }
+    else
+    {
+        for (size_t j = 0; j < 5 ; j++)
+            std::cout << arr_v[j] << " ";
+        std::cout << "[...]";
+    }
     std::cout << std::endl;
     int last_v = 0;
     int check = 0;
@@ -103,7 +153,7 @@ int main(int ac, char **av)
         check_d = 1;
     }
     clock_t start_v = clock();
-    merge_v(arr_v, pairs_v, 0);
+    merge_v(arr_v, pairs_v);
     std::vector<std::pair<int, int> >::iterator it_p;
     for (it_p = pairs_v.begin(); it_p != pairs_v.end(); it_p++)
     {
@@ -111,7 +161,8 @@ int main(int ac, char **av)
         largest_v.push_back(it_p->second);
     }
     std::vector<int>::iterator it_l;
-    std::sort(largest_v.begin(), largest_v.end());
+    // std::sort(largest_v.begin(), largest_v.end());
+    sort_v(largest_v, largest_v.size());
     for (size_t i = 0; i < smallest_v.size(); i++)
     {
         it_l = std::lower_bound(largest_v.begin(), largest_v.end(), smallest_v[i]);
@@ -129,7 +180,7 @@ int main(int ac, char **av)
         arr_v.push_back(largest_v[i]);
     ///////////////////////////deque/////////////////////
     clock_t start_d = clock();
-    merge_q(arr_d, pairs_d, 0);
+    merge_q(arr_d, pairs_d);
     std::deque<std::pair<int, int> >::iterator its_d;
     for (its_d = pairs_d.begin(); its_d != pairs_d.end(); its_d++)
     {
@@ -137,7 +188,8 @@ int main(int ac, char **av)
         largest_d.push_back(its_d->second);
     }
     std::deque<int>::iterator itl_d;
-    std::sort(largest_d.begin(), largest_d.end());
+    // std::sort(largest_d.begin(), largest_d.end());
+    sort_d(largest_d, largest_d.size());
     for (size_t i = 0; i < smallest_d.size(); i++)
     {
         itl_d = std::lower_bound(largest_d.begin(), largest_d.end(), smallest_d[i]);
@@ -154,8 +206,17 @@ int main(int ac, char **av)
     for (size_t i = 0;i < largest_d.size(); i++)
         arr_d.push_back(largest_d[i]);
     std::cout << "After: ";
-    for (size_t j = 0; j < arr_v.size(); j++)
-        std::cout << arr_v[j] << " ";
+    if (arr_v.size() < 5)
+    {
+        for (size_t j = 0; j < arr_v.size(); j++)
+            std::cout << arr_v[j] << " ";
+    }
+    else
+    {
+        for (size_t j = 0; j < 5 ; j++)
+            std::cout << arr_v[j] << " ";
+        std::cout << "[...]";
+    }
     std::cout << std::endl;
     std::cout << "Time to process a range of " << arr_v.size() << " elements with std::vector : " << std::fixed << std::setprecision(5) << time_v << " us" <<std::endl;
     std::cout << "Time to process a range of " << arr_d.size() << " elements with std::deque : " << std::fixed << std::setprecision(5) << time_d << " us" <<std::endl;

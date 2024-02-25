@@ -6,7 +6,7 @@
 /*   By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:57:16 by taelkhal          #+#    #+#             */
-/*   Updated: 2024/02/24 15:30:16 by taelkhal         ###   ########.fr       */
+/*   Updated: 2024/02/24 22:26:18 by taelkhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,15 @@
 
 int main(int ac, char **av)
 {
-    if (ac != 2)
+    try
     {
-        std::cout << "Error: could not open file." << std::endl;
-        exit (0);
+        if (ac != 2)
+            throw std::runtime_error("Error: could not open file.");
+        BitcoinExchange a;
+        a.parse_file(av[1]);
     }
-    BitcoinExchange a;
-    a.parse_file(av[1]);
-    
+    catch (std::exception &e)
+    {
+        std::cout << e.what() << std::endl;
+    }
 }
